@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">KotlinTaskApp</string>
+    <string name="str_err_bad_internet_connectivity">Bad Internet Connectivity, you are in Offline mode</string>
+    <string name="str_msg_issue_id">For IssueID : </string>
+    <string name="str_msg_please_wait_loading_data">Please wait.. Loading Data</string>
+    <string name="str_err_response_not_success">Response not Successful</string>
+    <string name="str_welcome">Welcome</string>
+    <string name="str_github_issues_title">GitHub Issues</string>
+    <string name="str_comments">Comments</string>
+    <string name="str_sub_title_for_issues">for Issues</string>
+    <string name="str_label_issue_desc">Issue Description : </string>
+    <string name="str_label_updated_dt">Updated at : </string>
+    <string name="str_label_read_more">Read More</string>
+    <string name="str_label_read_less">Read Less</string>
+    <string name="str_menu_label_refresh">Refresh</string>
+    <string name="str_send_mail_to_dev">Send Mail To Developer</string>
+
+</resources>
