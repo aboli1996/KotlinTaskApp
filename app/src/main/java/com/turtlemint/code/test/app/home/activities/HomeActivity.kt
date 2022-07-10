@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.turtlemint.code.test.app.R
-import com.turtlemint.code.test.app.comments.activity.CommentsActivity
-import com.turtlemint.code.test.app.comments.dataclass.ModelComments
 import com.turtlemint.code.test.app.database.DatabaseUtils
 import com.turtlemint.code.test.app.databinding.LayoutHomeActivityBinding
 import com.turtlemint.code.test.app.home.adapter.IssuesListAdapter
@@ -44,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
         }else{
             Log.i(tag, "No Internet Connection")
             Toast.makeText(this, resources.getString(R.string.str_err_bad_internet_connectivity), Toast.LENGTH_SHORT).show()
-            viewModel.getDummyData()
+            viewModel.getIssuesData()
         }
 
     }
@@ -72,6 +70,7 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    /*API call for getting issues data*/
     private fun getData() {
         try {
             val progressDialog = ProgressDialog(this@HomeActivity)
@@ -86,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
                         Log.i(tag, "get Issues Data Response success")
                         if (response.body() != null){
                             DatabaseUtils().insertIssuesData(this@HomeActivity,response.body()!!)
-                            viewModel.getDummyData()
+                            viewModel.getIssuesData()
                         }
 
                     }else{
@@ -126,7 +125,7 @@ class HomeActivity : AppCompatActivity() {
                }else{
                    Log.i(tag, "No Internet Connection")
                    Toast.makeText(this, resources.getString(R.string.str_err_bad_internet_connectivity), Toast.LENGTH_SHORT).show()
-                   viewModel.getDummyData()
+                   viewModel.getIssuesData()
                }
            }
             android.R.id.home ->{

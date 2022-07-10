@@ -17,6 +17,7 @@ import com.turtlemint.code.test.app.databinding.LayoutListItemIssuesBinding
 import com.turtlemint.code.test.app.home.activities.HomeActivity
 import com.turtlemint.code.test.app.home.dataclass.ModelIssues
 import com.turtlemint.code.test.app.home.fragment.FragmentImageEnlarge
+import com.turtlemint.code.test.app.utils.Constants
 import com.turtlemint.code.test.app.utils.Constants.Companion.INTENT_KEY_ISSUE_ID
 import com.turtlemint.code.test.app.utils.Constants.Companion.INTENT_KEY_ISSUE_TITLE
 import com.turtlemint.code.test.app.utils.Constants.Companion.INTENT_KEY_ISSUE_URL
@@ -41,15 +42,15 @@ class IssuesListAdapter(var context : Context,var modelIssues : List<ModelIssues
     override fun onBindViewHolder(holder: IssuesListAdapter.IssuesViewHolder, position: Int) {
        val model : ModelIssues = issuesList.get(position)
 
-        val content : SpannableString = SpannableString(model.title)
+        val content : SpannableString = SpannableString(model.title ?: Constants.NA)
         content.setSpan(UnderlineSpan(),0,content.length, 0)
-        holder.binding.txtIssueTitle.text = content ?: ""
+        holder.binding.txtIssueTitle.text = content
 
         if(!TextUtils.isEmpty(model.user!!.login)){
             holder.binding.imgUserAvatar.visibility = VISIBLE
             holder.binding.txtIssueUserName.visibility = VISIBLE
-            Glide.with(context).load(model.user!!.avatar_url).thumbnail(0.25f).into(holder.binding.imgUserAvatar)
-            holder.binding.txtIssueUserName.text = model.user!!.login
+            Glide.with(context).load(model.user!!.avatar_url ?: "").thumbnail(0.25f).into(holder.binding.imgUserAvatar)
+            holder.binding.txtIssueUserName.text = model.user!!.login ?: ""
         }else{
             holder.binding.imgUserAvatar.visibility = GONE
             holder.binding.txtIssueUserName.visibility = GONE
@@ -62,36 +63,43 @@ class IssuesListAdapter(var context : Context,var modelIssues : List<ModelIssues
             }else{
                 holder.binding.txtIssueReadMore.visibility = VISIBLE
                 holder.binding.txtIssueReadLess.visibility = GONE
-                holder.binding.txtIssueDesc.text = model.body!!.substring(0,200)
+                holder.binding.txtIssueDesc.text = model.body!! .substring(0,200)
             }
         }
 
         holder.binding.chipCount.text = model.comments.toString()
         holder.binding.txtIssueUpdatedAtDt.text = Utils().getDate(model.updated_at ?: "")
 
+        /*click Read more to view entire issue description*/
         holder.binding.txtIssueReadMore.setOnClickListener(View.OnClickListener {
             holder.binding.txtIssueReadLess.visibility = VISIBLE
             holder.binding.txtIssueReadMore.visibility = GONE
-            holder.binding.txtIssueDesc.text = model.body
+            holder.binding.txtIssueDesc.text = model.body ?: ""
         })
 
+        /*click Read less to view collapsed issue description*/
         holder.binding.txtIssueReadLess.setOnClickListener(View.OnClickListener {
             holder.binding.txtIssueReadLess.visibility = GONE
             holder.binding.txtIssueReadMore.visibility = VISIBLE
-            holder.binding.txtIssueDesc.text = model.body!!.substring(0,200)
+            if(model.body != null){
+                holder.binding.txtIssueDesc.text = model.body!!.substring(0,200)
+            }
+
         })
 
+        /*click on image to view image in enlarged form*/
         holder.binding.imgUserAvatar.setOnClickListener(View.OnClickListener {
             val fm = (context as HomeActivity).supportFragmentManager
             val fragment = FragmentImageEnlarge(model.user!!.login!!, model.user!!.avatar_url!!)
             fragment.show(fm,"fragment_enlarge")
         })
 
+        /*navigating to Comments screen on chip count click*/
         holder.binding.chipCount.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, CommentsActivity::class.java)
-            intent.putExtra(INTENT_KEY_ISSUE_URL, model.url)
-            intent.putExtra(INTENT_KEY_ISSUE_ID, model.number)
-            intent.putExtra(INTENT_KEY_ISSUE_TITLE, model.title)
+            intent.putExtra(INTENT_KEY_ISSUE_URL, model.url ?: "")
+            intent.putExtra(INTENT_KEY_ISSUE_ID, model.number ?: 0)
+            intent.putExtra(INTENT_KEY_ISSUE_TITLE, model.title ?: "")
             context.startActivity(intent)
 
         })

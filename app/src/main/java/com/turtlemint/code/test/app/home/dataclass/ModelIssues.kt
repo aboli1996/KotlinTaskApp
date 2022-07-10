@@ -13,7 +13,7 @@ data class ModelIssues (
     var html_url : String?,
     var id : Int,
     var node_id : String?,
-    var number : Int,
+    var number : Int?,
     var title : String?,
     var user : ModelUser?,
     var labels : List<ModelLabels>?,

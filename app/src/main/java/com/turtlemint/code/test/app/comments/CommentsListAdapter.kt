@@ -13,7 +13,7 @@ import com.turtlemint.code.test.app.databinding.LayoutListItemIssuesBinding
 import com.turtlemint.code.test.app.home.adapter.IssuesListAdapter
 import com.turtlemint.code.test.app.utils.Utils
 
-class CommentsListAdapter (var context : Context, var modelComments : List<ModelComments>)
+class CommentsListAdapter (var context : Context, modelComments : List<ModelComments>)
     : RecyclerView.Adapter<CommentsListAdapter.CommentsViewHolder>() {
 
     var issuesList : List<ModelComments> = listOf()
@@ -31,9 +31,9 @@ class CommentsListAdapter (var context : Context, var modelComments : List<Model
     override fun onBindViewHolder(holder: CommentsListAdapter.CommentsViewHolder, position: Int) {
         val model : ModelComments = issuesList.get(position)
 
-        holder.binding.txtCommentedUser.text = model.user!!.login
-        holder.binding.chipMember.setText(model.author_association)
-        holder.binding.txtComments.text = model.body
+        holder.binding.txtCommentedUser.text = model.user!!.login ?: ""
+        holder.binding.chipMember.setText(model.author_association ?: "")
+        holder.binding.txtComments.text = model.body ?: ""
 
     }
 

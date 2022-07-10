@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KotlinTaskApp</string>
+    <string name="app_name">GitHub Issues</string>
     <string name="str_err_bad_internet_connectivity">Bad Internet Connectivity, you are in Offline mode</string>
     <string name="str_msg_issue_id">For IssueID : </string>
     <string name="str_msg_please_wait_loading_data">Please wait.. Loading Data</string>

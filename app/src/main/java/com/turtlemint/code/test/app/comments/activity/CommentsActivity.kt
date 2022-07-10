@@ -23,9 +23,6 @@ import com.turtlemint.code.test.app.utils.Constants.Companion.INTENT_KEY_ISSUE_T
 import com.turtlemint.code.test.app.utils.Constants.Companion.INTENT_KEY_ISSUE_URL
 import com.turtlemint.code.test.app.utils.Utils
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CommentsActivity : AppCompatActivity(){
 
@@ -52,10 +49,11 @@ class CommentsActivity : AppCompatActivity(){
         }else{
             Log.i(tag, "No Internet Connection")
             Toast.makeText(this, resources.getString(R.string.str_err_bad_internet_connectivity), Toast.LENGTH_SHORT).show()
-            viewModel.getDummyData(issueUrl)
+            viewModel.getCommentsIsuesData(issueUrl)
         }
     }
 
+    /*getting intent values */
     private fun getIntentValues(){
         if(intent != null){
             issueId = intent.extras!!.get(INTENT_KEY_ISSUE_ID).toString()
@@ -96,6 +94,8 @@ class CommentsActivity : AppCompatActivity(){
         })
     }
 
+
+    /*API call for Comments on issues Data*/
     private fun getData() {
         try {
             val progressDialog = ProgressDialog(this)
@@ -111,7 +111,7 @@ class CommentsActivity : AppCompatActivity(){
                         if (response.body() != null){
 
                             DatabaseUtils().insertCommentsData(this@CommentsActivity,response.body()!!)
-                            viewModel.getDummyData(issueUrl)
+                            viewModel.getCommentsIsuesData(issueUrl)
                         }
 
                     }else{
@@ -152,7 +152,7 @@ class CommentsActivity : AppCompatActivity(){
                 }else{
                     Log.i(tag, "No Internet Connection")
                     Toast.makeText(this, resources.getString(R.string.str_err_bad_internet_connectivity), Toast.LENGTH_SHORT).show()
-                    viewModel.getDummyData(issueUrl)
+                    viewModel.getCommentsIsuesData(issueUrl)
                 }
             }
             android.R.id.home -> super.onBackPressed()

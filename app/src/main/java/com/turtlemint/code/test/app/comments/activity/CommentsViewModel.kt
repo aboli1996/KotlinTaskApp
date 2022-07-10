@@ -16,7 +16,8 @@ class CommentsViewModel (application: Application) : AndroidViewModel(applicatio
     var modelCommentsList : List<ModelComments> = emptyList()
     val tag = "CommentsViewModel"
 
-    fun getDummyData(issueUrl : String){
+/*getting Comments on Issues Data for displaying users*/
+    fun getCommentsIsuesData(issueUrl : String){
         progressState.value = Constants.IN_PROGRESS
         viewModelScope.launch {
             Log.i(tag, "get Comments on Issues Data")

@@ -16,7 +16,8 @@ class IssuesViewModel(application: Application) : AndroidViewModel(application) 
     var modelIssueList : List<ModelIssues> = emptyList()
     val tag = "CommentsViewModel"
 
-    fun getDummyData(){
+    /*getting issues data for displaying users*/
+    fun getIssuesData(){
         progressState.value = Constants.IN_PROGRESS
         viewModelScope.launch {
             Log.i(tag, "get Issues Data")

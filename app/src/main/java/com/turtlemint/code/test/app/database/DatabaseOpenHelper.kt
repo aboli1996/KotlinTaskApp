@@ -1,5 +1,6 @@
 package com.turtlemint.code.test.app.database
 
+import android.app.slice.Slice
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -7,7 +8,7 @@ import com.turtlemint.code.test.app.utils.Constants
 import java.lang.Exception
 
 class DatabaseOpenHelper(context : Context, factory : SQLiteDatabase.CursorFactory?) : SQLiteOpenHelper(context,Constants.DATABASE_NAME,
-    factory, Constants.DATABASE_VERSION) {
+    factory, Constants.DATABASE_VERSION_1) {
 
     var database : SQLiteDatabase? = null
     var instance : DatabaseOpenHelper? = null
@@ -26,7 +27,6 @@ class DatabaseOpenHelper(context : Context, factory : SQLiteDatabase.CursorFacto
     override fun onCreate(db: SQLiteDatabase?) {
 
         try {
-
             db!!.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + DatabaseTableHelper.IssuesTable().TABLE_NAME + " (" +
                         DatabaseTableHelper.IssuesTable().URL + " TEXT, " +
@@ -51,7 +51,20 @@ class DatabaseOpenHelper(context : Context, factory : SQLiteDatabase.CursorFacto
                         DatabaseTableHelper.IssuesTable().STATE_REASON + " TEXT " +
                         ")"
             )
-
+            db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + DatabaseTableHelper.CommentsTable().TABLE_NAME + " (" +
+                        DatabaseTableHelper.CommentsTable().URL + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().ISSUE_URL + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().HTML_URL + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().ID + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().NODE_ID + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().CREATED_AT + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().UPDATED_AT + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().AUTHOR_ASSOCIATION + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().BODY + " TEXT, " +
+                        DatabaseTableHelper.CommentsTable().PERF_GIT_HUB + " TEXT " +
+                        ")"
+            )
             db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + DatabaseTableHelper.UsersTable().TABLE_NAME + " (" +
                         DatabaseTableHelper.UsersTable().LOGIN + " TEXT, " +
@@ -76,27 +89,12 @@ class DatabaseOpenHelper(context : Context, factory : SQLiteDatabase.CursorFacto
                         ")"
             )
 
-            db.execSQL(
-                "CREATE TABLE IF NOT EXISTS " + DatabaseTableHelper.CommentsTable().TABLE_NAME + " (" +
-                        DatabaseTableHelper.CommentsTable().URL + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().ISSUE_URL + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().HTML_URL + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().ID + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().NODE_ID + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().CREATED_AT + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().UPDATED_AT + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().AUTHOR_ASSOCIATION + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().BODY + " TEXT, " +
-                        DatabaseTableHelper.CommentsTable().PERF_GIT_HUB + " TEXT " +
-                        ")"
-            )
-
         }catch (e : Exception){
             e.printStackTrace()
         }
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
 
     }
 

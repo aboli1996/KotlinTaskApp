@@ -9,12 +9,15 @@ import android.util.Log
 import com.turtlemint.code.test.app.comments.dataclass.ModelComments
 import com.turtlemint.code.test.app.home.dataclass.ModelIssues
 import com.turtlemint.code.test.app.home.dataclass.ModelUser
+import com.turtlemint.code.test.app.utils.Utils
 
 class DatabaseUtils {
 
+    /*Insert Data into issues Table */
     fun insertIssuesData(context: Context, issuesList: List<ModelIssues>) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
+        database!!.beginTransaction()
 
         try {
             for (model in issuesList.indices) {
@@ -70,11 +73,9 @@ class DatabaseUtils {
                     DatabaseTableHelper.IssuesTable().PERF_GIT_HUB,
                     issuesList.get(model).performed_via_github_app
                 )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().STATE_REASON,
-                    issuesList.get(model).state_reason
-                )
+                values.put(DatabaseTableHelper.IssuesTable().STATE_REASON, issuesList.get(model).state_reason)
 
+                /*checking in issues table if data is already present or not*/
                 if (isExists(
                         database!!,
                         DatabaseTableHelper.IssuesTable().TABLE_NAME,
@@ -82,6 +83,7 @@ class DatabaseUtils {
                         issuesList.get(model).url!!
                     )
                 ) {
+                    /*if data is present then update data into issues table*/
                     database.update(
                         DatabaseTableHelper.IssuesTable().TABLE_NAME,
                         values,
@@ -89,22 +91,27 @@ class DatabaseUtils {
                         arrayOf(issuesList.get(model).url!!)
                     )
                 } else {
+                    /*if data is not present then insert data into issues table*/
                     database.insert(DatabaseTableHelper.IssuesTable().TABLE_NAME, null, values)
                 }
 
                 insertUsersData(context, issuesList.get(model).user!!, issuesList.get(model).url!!)
 
             }
+            database!!.setTransactionSuccessful()
         }catch (e : Exception) {
-            Log.i("insertIssuesData", "exception - $e")
+            Log.e("insertIssuesData", "exception - $e")
             e.printStackTrace()
+        }finally {
+            database!!.endTransaction()
         }
     }
 
-
+    /*insert users data */
     fun insertUsersData(context: Context, modelUser: ModelUser, baseurl : String) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
+        database!!.beginTransaction()
 
         try {
             values.put(DatabaseTableHelper.UsersTable().LOGIN, modelUser.login)
@@ -127,17 +134,23 @@ class DatabaseUtils {
             values.put(DatabaseTableHelper.UsersTable().TYPE, modelUser.type)
             values.put(DatabaseTableHelper.UsersTable().SITE_ADMIN, modelUser.site_admin)
 
+            /*checking if users data is present or not*/
             if (isExists(database!!, DatabaseTableHelper.UsersTable().TABLE_NAME, DatabaseTableHelper.UsersTable().BASE_URL, baseurl)) {
+                /*if users data is present then update data*/
                 database.update(DatabaseTableHelper.UsersTable().TABLE_NAME, values, DatabaseTableHelper.UsersTable().BASE_URL + " =? ",
                     arrayOf(baseurl)
                 )
             } else {
+                /*if users data not present then insert data*/
                 database.insert(DatabaseTableHelper.UsersTable().TABLE_NAME, null, values)
             }
+            database.setTransactionSuccessful()
 
         }catch (e :Exception){
             Log.i("insertUsersData", "exception - $e")
             e.printStackTrace()
+        }finally {
+            database!!.endTransaction()
         }
 
 
@@ -164,13 +177,15 @@ class DatabaseUtils {
         return isExists
     }
 
+
+    /*get issues data from database*/
     @SuppressLint("Range")
     fun getIssuesData(context: Context): List<ModelIssues> {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var issuesList: ArrayList<ModelIssues> = ArrayList()
         var cursor: Cursor? = null
         try {
-            val query : String = "Select * from " + DatabaseTableHelper.IssuesTable().TABLE_NAME
+            val query : String = "Select * from " + DatabaseTableHelper.IssuesTable().TABLE_NAME + " ord"
             Log.i("getIssuesData", "query : $query")
         cursor = database!!.rawQuery(query, null)
 
@@ -200,6 +215,8 @@ class DatabaseUtils {
         return issuesList
     }
 
+
+    /*get users data from database*/
     @SuppressLint("Range")
     fun getUserData(context: Context, baseurl: String) : ModelUser{
         val database = DatabaseOpenHelper(context, null).getInstance(context)
@@ -230,9 +247,11 @@ class DatabaseUtils {
         return modelUser
     }
 
+    /*insert comments data based on issue selected*/
     fun insertCommentsData(context: Context, commentsList: List<ModelComments>) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
+        database!!.beginTransaction()
         try {
 
             for (model in commentsList.indices) {
@@ -268,6 +287,7 @@ class DatabaseUtils {
                     commentsList.get(model).performed_via_github_app
                 )
 
+                /*checking if comments data on selected issue ids present or not */
                 if (isExists(
                         database!!,
                         DatabaseTableHelper.CommentsTable().TABLE_NAME,
@@ -275,6 +295,7 @@ class DatabaseUtils {
                         commentsList.get(model).url!!
                     )
                 ) {
+                    /*if data is present then update data in comments table*/
                     database.update(
                         DatabaseTableHelper.CommentsTable().TABLE_NAME,
                         values,
@@ -282,9 +303,11 @@ class DatabaseUtils {
                         arrayOf(commentsList.get(model).url!!)
                     )
                 } else {
+                    /*if data is not present then insert data in comments table*/
                     database.insert(DatabaseTableHelper.CommentsTable().TABLE_NAME, null, values)
                 }
 
+                /*to insert users data comment wise*/
                 insertUsersData(
                     context,
                     commentsList.get(model).user!!,
@@ -292,12 +315,16 @@ class DatabaseUtils {
                 )
 
             }
+            database!!.setTransactionSuccessful()
         }catch (e : Exception){
             Log.i("insertCommentsData", "exception - $e")
             e.printStackTrace()
+        }finally {
+            database!!.endTransaction()
         }
     }
 
+    /*get comments data on selected issue*/
     @SuppressLint("Range")
     fun getCommentsData(context: Context, issueUrl: String): List<ModelComments> {
         val database = DatabaseOpenHelper(context, null).getInstance(context)

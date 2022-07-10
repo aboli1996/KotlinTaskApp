@@ -24,7 +24,6 @@ class DatabaseTableHelper {
         val TIMELINE_URL = "timeline_url"
         val PERF_GIT_HUB = "perf_git_hub"
         val STATE_REASON = "state_reason"
-
     }
 
     class UsersTable {

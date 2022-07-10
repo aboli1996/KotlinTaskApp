@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.turtlemint.code.test.app.home.dataclass.ModelReactions
 import com.turtlemint.code.test.app.home.dataclass.ModelUser
 
+/*Data model for Comments on Issues*/
 data class ModelComments(
     var url : String?,
     var html_url : String?,
