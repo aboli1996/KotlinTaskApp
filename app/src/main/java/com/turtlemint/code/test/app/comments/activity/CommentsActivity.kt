@@ -44,6 +44,11 @@ class CommentsActivity : AppCompatActivity(){
         getIntentValues()
         setUpData()
         setViewModelListeners()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         if(Utils().checkInternetConnectivity(this)){
             getData()
         }else{

@@ -37,6 +37,10 @@ class HomeActivity : AppCompatActivity() {
         setUpData()
         setViewModelListeners()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         if(Utils().checkInternetConnectivity(this)){
             getData()
         }else{
@@ -44,7 +48,6 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this, resources.getString(R.string.str_err_bad_internet_connectivity), Toast.LENGTH_SHORT).show()
             viewModel.getIssuesData()
         }
-
     }
 
     private fun setUpData(){
