@@ -68,7 +68,7 @@ class IssuesListAdapter(var context : Context,var modelIssues : List<ModelIssues
         }
 
         holder.binding.chipCount.text = model.comments.toString()
-        holder.binding.txtIssueUpdatedAtDt.text = Utils().getDate(model.updated_at ?: "")
+        holder.binding.txtIssueUpdatedAtDt.text = Utils().getDate(model.updated_at ?: "", model.number!!)
 
         /*click Read more to view entire issue description*/
         holder.binding.txtIssueReadMore.setOnClickListener(View.OnClickListener {

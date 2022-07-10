@@ -1,11 +1,9 @@
 package com.turtlemint.code.test.app.database
 
-import android.app.slice.Slice
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.turtlemint.code.test.app.utils.Constants
-import java.lang.Exception
 
 class DatabaseOpenHelper(context : Context, factory : SQLiteDatabase.CursorFactory?) : SQLiteOpenHelper(context,Constants.DATABASE_NAME,
     factory, Constants.DATABASE_VERSION_1) {

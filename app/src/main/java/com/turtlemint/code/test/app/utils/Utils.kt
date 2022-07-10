@@ -6,16 +6,20 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Build
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class Utils {
 
-    fun getDate(date : String) : String{
+    fun getDate(date : String, issueNo : Int) : String{
         var formattedDate :String = ""
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).parse(date)
-        formattedDate = SimpleDateFormat("MM-dd-yyy", Locale.US).format(formatter)
+        Log.i("getDate", "Updated dt : $date for Issue Number - $issueNo")
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(date)
+        Log.i("getDate", "formatter dt : $formatter for Issue Number - $issueNo")
+        formattedDate = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(formatter)
+        Log.i("getDate", "formattedDate : $formattedDate for Issue Number - $issueNo")
         return formattedDate;
     }
 

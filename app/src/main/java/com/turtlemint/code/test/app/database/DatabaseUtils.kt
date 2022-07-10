@@ -17,62 +17,29 @@ class DatabaseUtils {
     fun insertIssuesData(context: Context, issuesList: List<ModelIssues>) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
-        database!!.beginTransaction()
+
 
         try {
             for (model in issuesList.indices) {
                 values.put(DatabaseTableHelper.IssuesTable().URL, issuesList.get(model).url)
-                values.put(
-                    DatabaseTableHelper.IssuesTable().REPO_URL,
-                    issuesList.get(model).repository_url
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().LABELS_URL,
-                    issuesList.get(model).labels_url
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().EVENTS_URL,
-                    issuesList.get(model).events_url
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().HTML_URL,
-                    issuesList.get(model).html_url
-                )
+                values.put(DatabaseTableHelper.IssuesTable().REPO_URL, issuesList.get(model).repository_url)
+                values.put(DatabaseTableHelper.IssuesTable().LABELS_URL, issuesList.get(model).labels_url)
+                values.put(DatabaseTableHelper.IssuesTable().EVENTS_URL, issuesList.get(model).events_url)
+                values.put(DatabaseTableHelper.IssuesTable().HTML_URL, issuesList.get(model).html_url)
                 values.put(DatabaseTableHelper.IssuesTable().ID, issuesList.get(model).id)
                 values.put(DatabaseTableHelper.IssuesTable().NODE_ID, issuesList.get(model).node_id)
                 values.put(DatabaseTableHelper.IssuesTable().NUMBER, issuesList.get(model).number)
                 values.put(DatabaseTableHelper.IssuesTable().TITLE, issuesList.get(model).title)
                 values.put(DatabaseTableHelper.IssuesTable().STATE, issuesList.get(model).state)
                 values.put(DatabaseTableHelper.IssuesTable().LOCKED, issuesList.get(model).locked)
-                values.put(
-                    DatabaseTableHelper.IssuesTable().COMMENTS,
-                    issuesList.get(model).comments
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().CREATED_AT,
-                    issuesList.get(model).created_at
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().UPDATED_AT,
-                    issuesList.get(model).updated_at
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().CLOSED_AT,
-                    issuesList.get(model).closed_at
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().AUTHOR_ASSOCIATION,
-                    issuesList.get(model).author_association
-                )
+                values.put(DatabaseTableHelper.IssuesTable().COMMENTS, issuesList.get(model).comments)
+                values.put(DatabaseTableHelper.IssuesTable().CREATED_AT, issuesList.get(model).created_at)
+                values.put(DatabaseTableHelper.IssuesTable().UPDATED_AT, issuesList.get(model).updated_at)
+                values.put(DatabaseTableHelper.IssuesTable().CLOSED_AT, issuesList.get(model).closed_at)
+                values.put(DatabaseTableHelper.IssuesTable().AUTHOR_ASSOCIATION, issuesList.get(model).author_association)
                 values.put(DatabaseTableHelper.IssuesTable().BODY, issuesList.get(model).body)
-                values.put(
-                    DatabaseTableHelper.IssuesTable().TIMELINE_URL,
-                    issuesList.get(model).timeline_url
-                )
-                values.put(
-                    DatabaseTableHelper.IssuesTable().PERF_GIT_HUB,
-                    issuesList.get(model).performed_via_github_app
-                )
+                values.put(DatabaseTableHelper.IssuesTable().TIMELINE_URL, issuesList.get(model).timeline_url)
+                values.put(DatabaseTableHelper.IssuesTable().PERF_GIT_HUB, issuesList.get(model).performed_via_github_app)
                 values.put(DatabaseTableHelper.IssuesTable().STATE_REASON, issuesList.get(model).state_reason)
 
                 /*checking in issues table if data is already present or not*/
@@ -84,9 +51,7 @@ class DatabaseUtils {
                     )
                 ) {
                     /*if data is present then update data into issues table*/
-                    database.update(
-                        DatabaseTableHelper.IssuesTable().TABLE_NAME,
-                        values,
+                    database.update(DatabaseTableHelper.IssuesTable().TABLE_NAME, values,
                         DatabaseTableHelper.IssuesTable().URL + " =? ",
                         arrayOf(issuesList.get(model).url!!)
                     )
@@ -98,12 +63,9 @@ class DatabaseUtils {
                 insertUsersData(context, issuesList.get(model).user!!, issuesList.get(model).url!!)
 
             }
-            database!!.setTransactionSuccessful()
         }catch (e : Exception) {
             Log.e("insertIssuesData", "exception - $e")
             e.printStackTrace()
-        }finally {
-            database!!.endTransaction()
         }
     }
 
@@ -111,7 +73,7 @@ class DatabaseUtils {
     fun insertUsersData(context: Context, modelUser: ModelUser, baseurl : String) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
-        database!!.beginTransaction()
+//        
 
         try {
             values.put(DatabaseTableHelper.UsersTable().LOGIN, modelUser.login)
@@ -144,15 +106,11 @@ class DatabaseUtils {
                 /*if users data not present then insert data*/
                 database.insert(DatabaseTableHelper.UsersTable().TABLE_NAME, null, values)
             }
-            database.setTransactionSuccessful()
 
         }catch (e :Exception){
             Log.i("insertUsersData", "exception - $e")
             e.printStackTrace()
-        }finally {
-            database!!.endTransaction()
         }
-
 
     }
 
@@ -251,7 +209,7 @@ class DatabaseUtils {
     fun insertCommentsData(context: Context, commentsList: List<ModelComments>) {
         val database = DatabaseOpenHelper(context, null).getInstance(context)
         var values: ContentValues = ContentValues()
-        database!!.beginTransaction()
+        
         try {
 
             for (model in commentsList.indices) {
@@ -315,12 +273,10 @@ class DatabaseUtils {
                 )
 
             }
-            database!!.setTransactionSuccessful()
+            
         }catch (e : Exception){
             Log.i("insertCommentsData", "exception - $e")
             e.printStackTrace()
-        }finally {
-            database!!.endTransaction()
         }
     }
 
