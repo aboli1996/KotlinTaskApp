@@ -4,7 +4,7 @@ class Constants {
 
     companion object{
         const val DATABASE_NAME = "test.db3"
-        const val DATABASE_VERSION_1 = 1
+        const val DATABASE_VERSION = 1
         const val IN_PROGRESS = 2
         const val IN_COMPLETE = 3
         const val IN_COMPLETE_WITH_ZERO = 4
